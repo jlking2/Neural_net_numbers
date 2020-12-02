@@ -5,62 +5,23 @@ Created on Wed Nov  4 14:21:57 2020
 @author: jlking2
 """
 
-def get_lasso_loop(x_train_mat, y_train, la_array):
-    x_width = np.shape(x_train_mat)[1]
-    y_length = len(y_train)
-    y_eval = np.expand_dims(np.zeros(y_length),axis=1)
-    #w_giant contains [elements,lambdas,numbers]    
-    w_giant = np.zeros((x_width,len(la_array),10))
-    for rr in range(0,10):
-        number_eval = rr
-        for k in range(0,y_length):
-            if y_train[k] == number_eval:
-                y_eval[k] = 1
-            elif y_train[k] != number_eval:
-                y_eval[k] = -1        
-        w_giant[:,:,rr] = get_lasso(x_train_mat, y_eval, la_array)
-    return w_giant
-
-def get_lasso(A,d,la_array):
-    max_iter = 10**4
-    tol = 10**(-3)
-    tau = 1/np.linalg.norm(A,2)**2
-    n = A.shape[1]
-    w = np.zeros((n,1))
-    num_lam = len(la_array)
-    X = np.zeros((n, num_lam))
-    for i, each_lambda in enumerate(la_array):
-        for j in range(max_iter):
-            z = w - tau*(A.T@(A@w-d))
-            w_old = w
-            w = np.sign(z) * np.clip(np.abs(z)-tau*each_lambda/2, 0, np.inf)
-            X[:, i:i+1] = w
-            if np.linalg.norm(w - w_old) < tol:
-                break
-    return X
-
-def get_SVC(x_train_mat, y_train, lambda_1, regularizer, loss_p):
-    x_width = np.shape(x_train_mat)[1]
-    y_length = len(y_train)
-    y_eval = np.zeros(y_length)
-    w_big = np.zeros((x_width,10))
-    toggle = True
-    if regularizer == 'l1':
-        toggle = False
-        
-    for rr in range(0,10):
-        number_eval = rr
-        for k in range(0,y_length):
-            if y_train[k] == number_eval:
-                y_eval[k] = 1
-            elif y_train[k] != number_eval:
-                y_eval[k] = -1        
-        clf = LinearSVC(random_state=0, tol=1e-3, C=lambda_1, loss=loss_p, penalty=regularizer, dual=toggle, max_iter = 1000)
-        clf.fit(x_train_mat, y_eval)
-        w_big[:,rr] = np.squeeze(clf.coef_.transpose())
-    return w_big
-
-#def get_SVC(A,d,la_array):
+#def get_lasso_loop(x_train_mat, y_train, la_array):
+#    x_width = np.shape(x_train_mat)[1]
+#    y_length = len(y_train)
+#    y_eval = np.expand_dims(np.zeros(y_length),axis=1)
+#    #w_giant contains [elements,lambdas,numbers]    
+#    w_giant = np.zeros((x_width,len(la_array),10))
+#    for rr in range(0,10):
+#        number_eval = rr
+#        for k in range(0,y_length):
+#            if y_train[k] == number_eval:
+#                y_eval[k] = 1
+#            elif y_train[k] != number_eval:
+#                y_eval[k] = -1        
+#        w_giant[:,:,rr] = get_lasso(x_train_mat, y_eval, la_array)
+#    return w_giant
+#
+#def get_lasso(A,d,la_array):
 #    max_iter = 10**4
 #    tol = 10**(-3)
 #    tau = 1/np.linalg.norm(A,2)**2
@@ -77,41 +38,83 @@ def get_SVC(x_train_mat, y_train, lambda_1, regularizer, loss_p):
 #            if np.linalg.norm(w - w_old) < tol:
 #                break
 #    return X
+#
+#def get_SVC(x_train_mat, y_train, lambda_1, regularizer, loss_p):
+#    x_width = np.shape(x_train_mat)[1]
+#    y_length = len(y_train)
+#    y_eval = np.zeros(y_length)
+#    w_big = np.zeros((x_width,10))
+#    toggle = True
+#    if regularizer == 'l1':
+#        toggle = False
+#        
+#    for rr in range(0,10):
+#        number_eval = rr
+#        for k in range(0,y_length):
+#            if y_train[k] == number_eval:
+#                y_eval[k] = 1
+#            elif y_train[k] != number_eval:
+#                y_eval[k] = -1        
+#        clf = LinearSVC(random_state=0, tol=1e-3, C=lambda_1, loss=loss_p, penalty=regularizer, dual=toggle, max_iter = 1000)
+#        clf.fit(x_train_mat, y_eval)
+#        w_big[:,rr] = np.squeeze(clf.coef_.transpose())
+#    return w_big
+#
+##def get_SVC(A,d,la_array):
+##    max_iter = 10**4
+##    tol = 10**(-3)
+##    tau = 1/np.linalg.norm(A,2)**2
+##    n = A.shape[1]
+##    w = np.zeros((n,1))
+##    num_lam = len(la_array)
+##    X = np.zeros((n, num_lam))
+##    for i, each_lambda in enumerate(la_array):
+##        for j in range(max_iter):
+##            z = w - tau*(A.T@(A@w-d))
+##            w_old = w
+##            w = np.sign(z) * np.clip(np.abs(z)-tau*each_lambda/2, 0, np.inf)
+##            X[:, i:i+1] = w
+##            if np.linalg.norm(w - w_old) < tol:
+##                break
+##    return X
+#
+#def get_w_Tik(x_train_mat, y_train, lambda_1):
+#    # ista_solve_hot: Iterative soft-thresholding for multiple values of
+#    # lambda with hot start for each case - the converged value for the previous
+#    # value of lambda is used as an initial condition for the current lambda.
+#    ## Make this into a function of lambda, x, y,... returns weights and errors
+#    ##GENERATE MATRICES
+#    x_width = np.shape(x_train_mat)[1]
+#    y_length = len(y_train)
+#    y_eval = np.zeros(y_length)
+#    w_big = np.zeros((x_width,10))
+#    
+#    for rr in range(0,10):
+#        number_eval = rr            
+#        for k in range(0,y_length):
+#            if y_train[k] == number_eval:
+#                y_eval[k] = 1
+#            elif y_train[k] != number_eval:
+#                y_eval[k] = -1        
+#        eyeye = lambda_1*np.eye(x_width)        
+#        w_big[:,rr] = np.linalg.inv(x_train_mat.T@x_train_mat+eyeye)@x_train_mat.T@y_eval
+#    return w_big
+#
+#def get_error(x_test_mat, y_test_mat, w_big):
+#    y_big = x_test_mat@w_big
+#    y_length = np.shape(y_big)[0]
+#    #Find the maximum for each fit
+#    y_fit = np.zeros(y_length)
+#    counter = 0
+#    for qq in range(0,y_length):
+#        y_fit[qq] = np.argmax(y_big[qq,:])
+#        if y_fit[qq] != y_test_mat[qq]:
+#            counter = counter + 1
+#    Error_rate = 1 - (y_length - counter)/y_length    
+#    return (Error_rate)
 
-def get_w_Tik(x_train_mat, y_train, lambda_1):
-    # ista_solve_hot: Iterative soft-thresholding for multiple values of
-    # lambda with hot start for each case - the converged value for the previous
-    # value of lambda is used as an initial condition for the current lambda.
-    ## Make this into a function of lambda, x, y,... returns weights and errors
-    ##GENERATE MATRICES
-    x_width = np.shape(x_train_mat)[1]
-    y_length = len(y_train)
-    y_eval = np.zeros(y_length)
-    w_big = np.zeros((x_width,10))
-    
-    for rr in range(0,10):
-        number_eval = rr            
-        for k in range(0,y_length):
-            if y_train[k] == number_eval:
-                y_eval[k] = 1
-            elif y_train[k] != number_eval:
-                y_eval[k] = -1        
-        eyeye = lambda_1*np.eye(x_width)        
-        w_big[:,rr] = np.linalg.inv(x_train_mat.T@x_train_mat+eyeye)@x_train_mat.T@y_eval
-    return w_big
-
-def get_error(x_test_mat, y_test_mat, w_big):
-    y_big = x_test_mat@w_big
-    y_length = np.shape(y_big)[0]
-    #Find the maximum for each fit
-    y_fit = np.zeros(y_length)
-    counter = 0
-    for qq in range(0,y_length):
-        y_fit[qq] = np.argmax(y_big[qq,:])
-        if y_fit[qq] != y_test_mat[qq]:
-            counter = counter + 1
-    Error_rate = 1 - (y_length - counter)/y_length    
-    return (Error_rate)
+def logsig(_x):
+    return 1/(1+np.exp(-_x))
 
 import numpy as np
 import matplotlib.pyplot as plt 
@@ -121,17 +124,17 @@ from sklearn.svm import LinearSVC
 
 (x_train, y_train), (x_test, y_test) = tf.keras.datasets.mnist.load_data()
 
-#x_test = x_train[10000:20000,:,:]
-#x_train = x_train[0:1000,:,:]
+x_test = x_train[10000:20000,:,:]
+x_train = x_train[0:1000,:,:]
 
-#y_test = y_train[10000:20000]
-#y_train = y_train[0:1000]
+y_test = y_train[10000:20000]
+y_train = y_train[0:1000]
 
 ## Make function that generates X_data and w based on whether it's tik or not 
+x_length_test = len(x_test)
 y_length_train = len(y_train)
 y_length_test = len(y_test)
-    
-# Generate 0-degree polynomial X train and test matrices
+
 x_train_0D = np.zeros((y_length_train,784))
 for k in range(0,y_length_train):
     xk_train_slice = x_train[k,:,:]
@@ -154,6 +157,40 @@ for k in range(0,y_length_test):
     xk_test_slice = x_test[k,:,:]
     x_test_1D[k,0:784] = xk_test_slice.flatten('C')
 x_train_1D[:,784] = 1
+
+# Generate 0-degree polynomial X train and test matrices
+q = np.shape(y_train)[1] #number of classification problems
+M = 2 #number of hidden nodes
+
+## initial weights
+V = np.random.randn(M+1, q); 
+W = np.random.randn(p+1, M);
+
+alpha = 0.1 #step size
+L = 10 #number of epochs
+
+def logsig(_x):
+    return 1/(1+np.exp(-_x))
+        
+for epoch in range(L):
+    ind = np.random.permutation(x_length_test)
+    for i in ind:
+        # Forward-propagate
+        H = logsig(np.hstack((np.ones((1,1)), x_train_1D[[i],:]@W)))
+        Yhat = logsig(H@V)
+        # Backpropagate
+        delta = (Yhat-Y[[i],:])*Yhat*(1-Yhat)
+        Vnew = V-alpha*H.T@delta
+        gamma = delta@V[1:,:].T*H[:,1:]*(1-H[:,1:])
+        Wnew = W - alpha*Xb[[i],:].T@gamma
+        V = Vnew
+        W = Wnew
+    print(epoch)
+
+## Final predicted labels (on training data)
+H = logsig(np.hstack((np.ones((n,1)), Xb@W)))
+Yhat = logsig(H@V)
+
 
 # Generate 2-degree polynomial X matrices
 x_train_2D = np.zeros((y_length_train,785+784))
