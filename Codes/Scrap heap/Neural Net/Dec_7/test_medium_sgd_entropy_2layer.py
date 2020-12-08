@@ -49,14 +49,18 @@ model = Sequential()
 # The input layer requires the special input_shape parameter which should match
 # the shape of our training data.
 model.add(Dense(units=32, activation='sigmoid', input_shape=(image_size,)))
-model.add(Dense(units=num_classes, activation='softmax'))
+model.add(Dense(units=num_classes, activation='softmax'))#can also do sigmoid here
 model.summary()
 
-model.compile(optimizer = 'sgd', loss='MSE', metrics=['accuracy'])
-history = model.fit(x_train_0D, y_train_0D, batch_size=128, epochs=20, verbose=False, validation_split=.1)
+model.compile(optimizer = 'sgd', loss='categorical_crossentropy', metrics=['accuracy'])
+history = model.fit(x_train_0D, y_train_0D, batch_size=128, epochs=40, verbose=False, validation_split=.1)
 loss, accuracy  = model.evaluate(x_test_0D, y_test_0D, verbose=False)
 
-print(accuracy)
+test_accuracy = accuracy
+train_accuracy = history.history['accuracy'][-1]
+
+print(train_accuracy)
+print(test_accuracy)
 #plt.plot(history.history['acc'])
 #plt.plot(history.history['val_acc'])
 #plt.title('model accuracy')
