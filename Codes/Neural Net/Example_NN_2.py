@@ -8,13 +8,6 @@ Created on Tue Dec  1 14:04:00 2020
 import numpy as np
 import matplotlib.pyplot as plt
 
-
-
-
-
-
-
-
 p = int(2) #features
 n = int(10000) #examples
 
@@ -27,7 +20,7 @@ Y = Y1
 ## Train NN
 Xb = np.hstack((np.ones((n,1)), X))
 q = np.shape(Y)[1] #number of classification problems
-M = 4 #number of hidden nodes
+M = 2 #number of hidden nodes
 
 ## initial weights
 V = np.random.randn(M+1, q); 

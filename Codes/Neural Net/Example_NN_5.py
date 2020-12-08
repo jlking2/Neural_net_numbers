@@ -11,8 +11,6 @@ def logsig(_x):
 import numpy as np
 import matplotlib.pyplot as plt
 import tensorflow as tf
-import time
-from sklearn.svm import LinearSVC
 
 (x_train, y_train), (x_test, y_test) = tf.keras.datasets.mnist.load_data()
 
@@ -77,20 +75,68 @@ def NN_2layer(alpha, L, M, Xdata_train, ydata_train):
     
     return [V, W, err_c1, Yhat]
 
-#testo_big = NN_2layer(.1, 10, 12, x_train_0D, y_train)
+#def NN_2_calc(V_eval, W_eval, X_eval:
+#    H = logsig(np.hstack((np.ones((n,1)), X_eval@W_eval)))
+#    Yhat = logsig(H@V_eval)
+#    
+#    ## generate training data
+#    X = Xdata_train
+#    Y = ydata_train.reshape(-1, 1)
+#    
+#    ## Train NN
+#    Xb = np.hstack((np.ones((n,1)), X))
+#    q = np.shape(Y)[1] #number of classification problems
+#         
 
 y_length = len(y_train)
 y_eval = np.zeros(y_length)
+w_list = [""]
+v_list = [""]
+y_list = np.zeros((y_length,10))
 
 for rr in range(0,10):
-        number_eval = rr
-        for k in range(0,y_length):
-            if y_train[k] == number_eval:
-                y_eval[k] = 1
-            elif y_train[k] != number_eval:
-                y_eval[k] = 0
+    for k in range(0,y_length):
+        if y_train[k] == rr:
+            y_eval[k] = 1
+        elif y_train[k] != rr:
+            y_eval[k] = 0
+    train_output = NN_2layer(.1, 10, 20, x_train_0D, y_eval)
+    #NN_2layer(alpha, L-epochs, M-nodes, Xdata_train, ydata_train): 
+    v_list.append(train_output[0])
+    w_list.append(train_output[1])
+    y_list[:,rr] = np.squeeze(train_output[3])
+        
+#Eval to find max y
+y_fit = np.zeros(y_length)
+counter = 0
+for tt in range(0,y_length):
+    y_fit[tt] = np.argmax(y_list[tt,:])
+    if y_fit[tt] != y_train[tt]:
+        counter = counter + 1
+total_error = counter/y_length
+print(total_error)
+#
+#def get_error(x_test_mat, y_test_mat, w_big):
+#    y_big = x_test_mat@w_big
+#    y_length = np.shape(y_big)[0]
+#    #Find the maximum for each fit
+#    y_fit = np.zeros(y_length)
+#    counter = 0
+#    for qq in range(0,y_length):
+#        y_fit[qq] = np.argmax(y_big[qq,:])
+#        if y_fit[qq] != y_test_mat[qq]:
+#            counter = counter + 1
+#    Error_rate = 1 - (y_length - counter)/y_length    
+#    return (Error_rate)
+#
 
-testo_big = NN_2layer(.1, 10, 10, x_train_0D, y_eval)
+    
+    ## Final predicted labels (on training data)
+    #H = logsig(np.hstack((np.ones((n,1)), Xb@W)))
+    #Yhat = logsig(H@V)
+
+
+
 #(alpha/step size , L/ epochs, M/# of hidden nodes, Xdata, Ydata)
 
 
