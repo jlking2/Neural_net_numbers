@@ -44,13 +44,33 @@ from keras.models import Sequential # Documentation: https://keras.io/models/seq
 image_size = 784 # 28*28
 num_classes = 10 # ten unique digits
 
+#
+epoch_default = 20
+nodes_default = 30
+
+epoch_list = np.linspace(10,60,6)
+nodes_list = np.linspace(10,60,6)
+
+## MSE Loss
+
+MSE_epoch_test = np.zeros((len(epoch_list),1))
+MSE_epoch_train = np.zeros((len(epoch_list),1))
+MSE_nodes_test = np.zeros((len(nodes_list),1))
+MSE_nodes_train = np.zeros((len(nodes_list),1))
+
+
+
+# Epoch loop 
+for epoch in epoch_list:
+    print('blah')
+
 model = Sequential()
 
 # The input layer requires the special input_shape parameter which should match
 # the shape of our training data.
-model.add(Dense(units=32, activation='sigmoid', input_shape=(image_size,)))
-model.add(Dense(units=32, activation='sigmoid', input_shape=(image_size,)))
-model.add(Dense(units=num_classes, activation='softmax'))
+model.add(Dense(units=num_classes, activation='relu', input_shape=(image_size,)))
+model.add(Dense(units=num_classes, activation='relu', input_shape=(image_size,)))
+#model.add(Dense(units=num_classes, activation='softmax'))
 model.summary()
 
 model.compile(optimizer = 'sgd', loss='categorical_crossentropy', metrics=['accuracy'])
@@ -62,6 +82,34 @@ train_accuracy = history.history['accuracy'][-1]
 
 print(train_accuracy)
 print(test_accuracy)
+
+
+## Categorical Cross Entropy Loss
+model = Sequential()
+
+# The input layer requires the special input_shape parameter which should match
+# the shape of our training data.
+model.add(Dense(units=num_classes, activation='sigmoid', input_shape=(image_size,)))
+model.add(Dense(units=num_classes, activation='sigmoid', input_shape=(image_size,)))
+#model.add(Dense(units=num_classes, activation='softmax'))
+model.summary()
+
+model.compile(optimizer = 'sgd', loss='categorical_crossentropy', metrics=['accuracy'])
+history = model.fit(x_train_0D, y_train_0D, batch_size=128, epochs=40, verbose=False, validation_split=.1)
+loss, accuracy  = model.evaluate(x_test_0D, y_test_0D, verbose=False)
+
+test_accuracy = accuracy
+train_accuracy = history.history['accuracy'][-1]
+
+print(train_accuracy)
+print(test_accuracy)
+
+
+
+
+
+
+
 #plt.plot(history.history['acc'])
 #plt.plot(history.history['val_acc'])
 #plt.title('model accuracy')
