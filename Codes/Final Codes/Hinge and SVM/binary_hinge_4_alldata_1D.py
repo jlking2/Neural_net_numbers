@@ -183,55 +183,55 @@ Err_2D_L2s = np.zeros(len_range)
 
 t0 = time.time()
 
-#0D fits
-for m in range(0,len_range):
-    w_big = get_SVC(x_train_0D, y_train, lambda_range[m], 'l1', 'squared_hinge')
-    Err_0D_L1s[m] = get_error(x_test_0D, y_test, w_big)
-    print(m)
-for m in range(0,len_range):
-    w_big = get_SVC(x_train_0D, y_train, lambda_range[m], 'l2', 'squared_hinge')
-    Err_0D_L2s[m] = get_error(x_test_0D, y_test, w_big)
-    print(m)
-for m in range(0,len_range):
-    w_big = get_SVC(x_train_0D, y_train, lambda_range[m], 'l2', 'hinge')
-    Err_0D_L2[m] = get_error(x_test_0D, y_test, w_big)
-    print(m)
-t1 = time.time()
-#
-total = t1-t0
-print(total)
+##0D fits
+#for m in range(0,len_range):
+#    w_big = get_SVC(x_train_0D, y_train, lambda_range[m], 'l1', 'squared_hinge')
+#    Err_0D_L1s[m] = get_error(x_test_0D, y_test, w_big)
+#    print(m)
+#for m in range(0,len_range):
+#    w_big = get_SVC(x_train_0D, y_train, lambda_range[m], 'l2', 'squared_hinge')
+#    Err_0D_L2s[m] = get_error(x_test_0D, y_test, w_big)
+#    print(m)
+#for m in range(0,len_range):
+#    w_big = get_SVC(x_train_0D, y_train, lambda_range[m], 'l2', 'hinge')
+#    Err_0D_L2[m] = get_error(x_test_0D, y_test, w_big)
+#    print(m)
+#t1 = time.time()
+##
+#total = t1-t0
+#print(total)
 
 #1D fits
 for m in range(0,len_range):
     w_big = get_SVC(x_train_1D, y_train, lambda_range[m], 'l1', 'squared_hinge')
     Err_1D_L1s[m] = get_error(x_test_1D, y_test, w_big)
-
+    print(m)
 for m in range(0,len_range):
     w_big = get_SVC(x_train_1D, y_train, lambda_range[m], 'l2', 'squared_hinge')
     Err_1D_L2s[m] = get_error(x_test_1D, y_test, w_big)
-
+    print(m)
 for m in range(0,len_range):
     w_big = get_SVC(x_train_1D, y_train, lambda_range[m], 'l2', 'hinge')
     Err_1D_L2[m] = get_error(x_test_1D, y_test, w_big)    
-    
+    print(m) 
 t2 = time.time()
 #
 total = t2-t1
 print(total)
 
-#2D fits
-for m in range(0,len_range):
-    w_big = get_SVC(x_train_2D, y_train, lambda_range[m], 'l1', 'squared_hinge')
-    Err_2D_L1s[m] = get_error(x_test_2D, y_test, w_big)
-
-for m in range(0,len_range):
-    w_big = get_SVC(x_train_2D, y_train, lambda_range[m], 'l2', 'squared_hinge')
-    Err_2D_L2s[m] = get_error(x_test_2D, y_test, w_big)
-
-for m in range(0,len_range):
-    w_big = get_SVC(x_train_2D, y_train, lambda_range[m], 'l2', 'hinge')
-    Err_2D_L2[m] = get_error(x_test_2D, y_test, w_big)    
-    
+##2D fits
+#for m in range(0,len_range):
+#    w_big = get_SVC(x_train_2D, y_train, lambda_range[m], 'l1', 'squared_hinge')
+#    Err_2D_L1s[m] = get_error(x_test_2D, y_test, w_big)
+#
+#for m in range(0,len_range):
+#    w_big = get_SVC(x_train_2D, y_train, lambda_range[m], 'l2', 'squared_hinge')
+#    Err_2D_L2s[m] = get_error(x_test_2D, y_test, w_big)
+#
+#for m in range(0,len_range):
+#    w_big = get_SVC(x_train_2D, y_train, lambda_range[m], 'l2', 'hinge')
+#    Err_2D_L2[m] = get_error(x_test_2D, y_test, w_big)    
+#    
 t3 = time.time()
 #
 total = t3-t2
@@ -265,17 +265,17 @@ print(total)
 #print(total2)
 #
 #
-plt.figure(1)
-plt.plot(lambda_range, Err_0D_L1s, '-bo')
-plt.plot(lambda_range, Err_0D_L2, '-r^')
-plt.plot(lambda_range, Err_0D_L2s, '-gs')
-plt.xlabel('Penalty, \u03BB')
-plt.ylabel('Error Rate')
-plt.xscale('log')
-plt.title('Error rate vs Penalty, \u03BB. 0th-degree fits')
-plt.grid(True)
-plt.legend(('l1-regularized, squared hinge loss','l2-regularized, hinge loss','l2-regularized, squared hinge loss'))
-plt.show()
+#plt.figure(1)
+#plt.plot(lambda_range, Err_0D_L1s, '-bo')
+#plt.plot(lambda_range, Err_0D_L2, '-r^')
+#plt.plot(lambda_range, Err_0D_L2s, '-gs')
+#plt.xlabel('Penalty, \u03BB')
+#plt.ylabel('Error Rate')
+#plt.xscale('log')
+#plt.title('Error rate vs Penalty, \u03BB. 0th-degree fits')
+#plt.grid(True)
+#plt.legend(('l1-regularized, squared hinge loss','l2-regularized, hinge loss','l2-regularized, squared hinge loss'))
+#plt.show()
 
 plt.figure(2)
 plt.plot(lambda_range, Err_1D_L1s, '-bo')
@@ -289,17 +289,17 @@ plt.grid(True)
 plt.legend(('l1-regularized, squared hinge loss','l2-regularized, hinge loss','l2-regularized, squared hinge loss'))
 plt.show()
 
-plt.figure(3)
-plt.plot(lambda_range, Err_2D_L1s, '-bo')
-plt.plot(lambda_range, Err_2D_L2, '-r^')
-plt.plot(lambda_range, Err_2D_L2s, '-gs')
-plt.xlabel('Penalty, \u03BB')
-plt.ylabel('Error Rate')
-plt.xscale('log')
-plt.title('Error rate vs Penalty, \u03BB. 2nd degree fits')
-plt.grid(True)
-plt.legend(('l1-regularized, squared hinge loss','l2-regularized, hinge loss','l2-regularized, squared hinge loss'))
-plt.show()
+#plt.figure(3)
+#plt.plot(lambda_range, Err_2D_L1s, '-bo')
+#plt.plot(lambda_range, Err_2D_L2, '-r^')
+#plt.plot(lambda_range, Err_2D_L2s, '-gs')
+#plt.xlabel('Penalty, \u03BB')
+#plt.ylabel('Error Rate')
+#plt.xscale('log')
+#plt.title('Error rate vs Penalty, \u03BB. 2nd degree fits')
+#plt.grid(True)
+#plt.legend(('l1-regularized, squared hinge loss','l2-regularized, hinge loss','l2-regularized, squared hinge loss'))
+#plt.show()
 
 #
 #plt.figure(2)

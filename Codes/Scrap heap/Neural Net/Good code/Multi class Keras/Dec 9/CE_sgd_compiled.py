@@ -232,33 +232,6 @@ for kk in range(0,len(epoch_list)):
     sigmoid_nodes_test3L[kk] = accuracy
     sigmoid_nodes_train3L[kk] = history.history['accuracy'][-1]
 
-#plt.figure(1)
-#plt.scatter(epoch_list, relu_MSE_epoch_test3L)
-#plt.scatter(epoch_list, sigmoid_MSE_epoch_test3L)
-##plt.title('Predicted Labels, changing alpha')
-#plt.ylabel('accuracy')
-#plt.xlabel('epoch')
-#plt.legend(['relu', 'sigmoid'], loc='best')
-#plt.show()
-#
-#plt.figure(2)
-#plt.scatter(nodes_list, relu_MSE_nodes_test3L, linewidths = '1')
-#plt.scatter(nodes_list, sigmoid_MSE_nodes_test3L)
-##plt.title('Predicted Labels, changing alpha')
-#plt.ylabel('accuracy')
-#plt.xlabel('width of hidden layers')
-#plt.legend(['relu', 'sigmoid'], loc='best')
-#plt.show()
-
-
-#plt.figure(3)
-#plt.plot(nodes_list, relu_MSE_nodes_test,marker='o')
-#plt.plot(nodes_list, sigmoid_MSE_nodes_test,marker='o')
-##plt.title('Predicted Labels, changing alpha')
-#plt.ylabel('accuracy')
-#plt.xlabel('width of hidden layers')
-#plt.legend(['relu', 'sigmoid'], loc='best')
-#plt.show()
 
 plt.figure(1)
 plt.plot(epoch_list, relu_epoch_test2L,marker='o',markersize=12,color='black')
@@ -281,15 +254,4 @@ plt.ylabel('accuracy')
 plt.xlabel('width of hidden layers')
 plt.legend(['relu, 2 layers', 'relu, 3 layers', 'sigmoid, 2 layers', 'sigmoid, 3 layers'], loc='best')
 plt.show()
-
-#
-#
-#plt.plot(history.history['acc'])
-#plt.plot(history.history['val_acc'])
-#plt.title('model accuracy')
-
-#
-#print(f'Test loss: {loss:.3}')
-#print(f'Test accuracy: {accuracy:.3}')
-
 

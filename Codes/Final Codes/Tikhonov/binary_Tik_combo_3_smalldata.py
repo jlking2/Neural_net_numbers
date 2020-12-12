@@ -59,7 +59,6 @@ x_train = x_train[0:10000,:,:]
 y_test = y_train[10000:20000]
 y_train = y_train[0:10000]
 
-
 ## Make function that generates X_data and w based on whether it's tik or not 
 y_length_train = len(y_train)
 y_length_test = len(y_test)
@@ -76,17 +75,8 @@ for k in range(0,y_length_test):
     x_test_0D[k,:] = xk_test_slice.flatten('C')
 
 # Generate 1-degree polynomial X matrices
-x_train_1D = np.zeros((y_length_train,785))
-for k in range(0,y_length_train):
-    xk_train_slice = x_train[k,:,:]
-    x_train_1D[k,0:784] = xk_train_slice.flatten('C')
-x_train_1D[:,784] = 1
-
-x_test_1D = np.zeros((y_length_test,785))
-for k in range(0,y_length_test):
-    xk_test_slice = x_test[k,:,:]
-    x_test_1D[k,0:784] = xk_test_slice.flatten('C')
-x_train_1D[:,784] = 1
+x_train_1D = np.hstack((x_train_0D,np.ones((y_length_train,1))))
+x_test_1D = np.hstack((x_test_0D,np.ones((y_length_test,1))))
 
 # Generate 2-degree polynomial X matrices
 x_train_2D = np.zeros((y_length_train,785+784))
@@ -105,6 +95,7 @@ for k in range(0,y_length_test):
     x_test_2D[k,784:2*784] = xk_test_slice_2.flatten('C')
 x_test_2D[:,2*784] = 1
 
+
 lambda_range1 = 1E-15*(10**np.array(range(1,10)))
 lambda_range2 = 1E-6*(10**np.array(range(1,10)))
 lambda_range3 = 1E3*(10**np.array(range(1,10)))
@@ -115,27 +106,21 @@ Err_0D = np.zeros(len_range)
 Err_1D = np.zeros(len_range)
 Err_2D = np.zeros(len_range)
 
-#for m in range(0,len_range):
-
-
 for m in range(0,len_range):
-
     lambda_1 = lambda_range[m]
     w_big = get_w_Tik(x_train_0D, y_train, lambda_1)
     Err_0D[m] = get_error(x_test_0D, y_test, w_big)
-
+    print(m)
 for m in range(0,len_range):
-
     lambda_1 = lambda_range[m]
     w_big = get_w_Tik(x_train_1D, y_train, lambda_1)
     Err_1D[m] = get_error(x_test_1D, y_test, w_big)
-    
+    print(m)
 for m in range(0,len_range):
-
     lambda_1 = lambda_range[m]
     w_big = get_w_Tik(x_train_2D, y_train, lambda_1)
     Err_2D[m] = get_error(x_test_2D, y_test, w_big)
-
+    print(m)
 plt.figure(1)
 plt.plot(lambda_range, Err_0D, 'bo')
 plt.xlabel('Ridge Parameter, \u03BB')

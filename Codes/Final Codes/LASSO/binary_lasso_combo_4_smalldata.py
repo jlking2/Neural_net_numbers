@@ -88,11 +88,11 @@ import time
 
 (x_train, y_train), (x_test, y_test) = tf.keras.datasets.mnist.load_data()
 
-x_test = x_train[10000:20000,:,:]
-x_train = x_train[0:10000,:,:]
+#x_test = x_train[10000:20000,:,:]
+x_train = x_train[0:1000,:,:]
 
-y_test = y_train[10000:20000]
-y_train = y_train[0:10000]
+#y_test = y_train[10000:20000]
+y_train = y_train[0:1000]
 
 ## Make function that generates X_data and w based on whether it's tik or not 
 y_length_train = len(y_train)
@@ -110,17 +110,8 @@ for k in range(0,y_length_test):
     x_test_0D[k,:] = xk_test_slice.flatten('C')
 
 # Generate 1-degree polynomial X matrices
-x_train_1D = np.zeros((y_length_train,785))
-for k in range(0,y_length_train):
-    xk_train_slice = x_train[k,:,:]
-    x_train_1D[k,0:784] = xk_train_slice.flatten('C')
-x_train_1D[:,784] = 1
-
-x_test_1D = np.zeros((y_length_test,785))
-for k in range(0,y_length_test):
-    xk_test_slice = x_test[k,:,:]
-    x_test_1D[k,0:784] = xk_test_slice.flatten('C')
-x_train_1D[:,784] = 1
+x_train_1D = np.hstack((x_train_0D,np.ones((y_length_train,1))))
+x_test_1D = np.hstack((x_test_0D,np.ones((y_length_test,1))))
 
 # Generate 2-degree polynomial X matrices
 x_train_2D = np.zeros((y_length_train,785+784))
@@ -155,6 +146,7 @@ w_giant_0D = get_lasso_loop(x_train_0D,y_train,lambda_range)
 for m in range(0,len_range):
     w_biggo = w_giant_0D[:,m,:]
     Err_0D[m] = get_error(x_test_0D, y_test, w_biggo)
+    print(m)
 del(w_giant_0D,x_train_0D)
 
 t1 = time.time()
@@ -166,6 +158,7 @@ w_giant_1D = get_lasso_loop(x_train_1D,y_train,lambda_range)
 for m in range(0,len_range):
     w_biggo = w_giant_1D[:,m,:]
     Err_1D[m] = get_error(x_test_1D, y_test, w_biggo)
+    print(m)
 del(w_giant_1D,x_train_1D)
 
 t2 = time.time()
@@ -174,13 +167,13 @@ w_giant_2D = get_lasso_loop(x_train_2D,y_train,lambda_range)
 for m in range(0,len_range):
     w_biggo = w_giant_2D[:,m,:]
     Err_2D[m] = get_error(x_test_2D, y_test, w_biggo)
+    print(m)
 del(w_giant_2D,x_train_2D)
 
 t3 = time.time()
 
 total2 = t3-t2
 print(total2)
-
 
 plt.figure(1)
 plt.plot(lambda_range, Err_0D, 'bo')
@@ -216,6 +209,7 @@ plt.plot(lambda_range, Err_2D, '-gs')
 plt.xlabel('Lasso Parameter, \u03BB')
 plt.ylabel('Error Rate')
 plt.xscale('log')
+plt.ylim([.18,.93])
 plt.title('Error rate vs Lasso Parameter, \u03BB')
 plt.grid(True)
 plt.legend(('0th degree','1st degree','2nd degree'))

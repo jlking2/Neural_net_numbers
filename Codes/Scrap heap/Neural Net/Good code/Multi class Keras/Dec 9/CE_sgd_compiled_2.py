@@ -12,12 +12,12 @@ import tensorflow as tf
 import keras
 
 (x_train, y_train), (x_test, y_test) = tf.keras.datasets.mnist.load_data()
+
+#x_test = x_train[1000:2000,:,:]
+#x_train = x_train[0:1000,:,:]
 #
-#x_test = x_train[10000:20000,:,:]
-#x_train = x_train[0:10000,:,:]
-#
-#y_test = y_train[10000:20000]
-#y_train = y_train[0:10000]
+#y_test = y_train[1000:2000]
+#y_train = y_train[0:1000]
 
 y_length_train = len(y_train)
 y_length_test = len(y_test)
@@ -53,27 +53,25 @@ nodes_list = np.linspace(10,60,6)
 
 ## MSE Loss
 
-## MSE Loss
+relu_epoch_test2L = np.zeros((len(epoch_list),1))
+relu_epoch_train2L = np.zeros((len(epoch_list),1))
+sigmoid_epoch_test2L = np.zeros((len(epoch_list),1))
+sigmoid_epoch_train2L = np.zeros((len(epoch_list),1))
 
-relu_MSE_epoch_test2L = np.zeros((len(epoch_list),1))
-relu_MSE_epoch_train2L = np.zeros((len(epoch_list),1))
-sigmoid_MSE_epoch_test2L = np.zeros((len(epoch_list),1))
-sigmoid_MSE_epoch_train2L = np.zeros((len(epoch_list),1))
+relu_nodes_test2L = np.zeros((len(nodes_list),1))
+relu_nodes_train2L = np.zeros((len(nodes_list),1))
+sigmoid_nodes_test2L = np.zeros((len(nodes_list),1))
+sigmoid_nodes_train2L = np.zeros((len(nodes_list),1))
 
-relu_MSE_nodes_test2L = np.zeros((len(nodes_list),1))
-relu_MSE_nodes_train2L = np.zeros((len(nodes_list),1))
-sigmoid_MSE_nodes_test2L = np.zeros((len(nodes_list),1))
-sigmoid_MSE_nodes_train2L = np.zeros((len(nodes_list),1))
+relu_epoch_test3L = np.zeros((len(epoch_list),1))
+relu_epoch_train3L = np.zeros((len(epoch_list),1))
+sigmoid_epoch_test3L = np.zeros((len(epoch_list),1))
+sigmoid_epoch_train3L = np.zeros((len(epoch_list),1))
 
-relu_MSE_epoch_test3L = np.zeros((len(epoch_list),1))
-relu_MSE_epoch_train3L = np.zeros((len(epoch_list),1))
-sigmoid_MSE_epoch_test3L = np.zeros((len(epoch_list),1))
-sigmoid_MSE_epoch_train3L = np.zeros((len(epoch_list),1))
-
-relu_MSE_nodes_test3L = np.zeros((len(nodes_list),1))
-relu_MSE_nodes_train3L = np.zeros((len(nodes_list),1))
-sigmoid_MSE_nodes_test3L = np.zeros((len(nodes_list),1))
-sigmoid_MSE_nodes_train3L = np.zeros((len(nodes_list),1))
+relu_nodes_test3L = np.zeros((len(nodes_list),1))
+relu_nodes_train3L = np.zeros((len(nodes_list),1))
+sigmoid_nodes_test3L = np.zeros((len(nodes_list),1))
+sigmoid_nodes_train3L = np.zeros((len(nodes_list),1))
 
 
 # Epoch loop relu
@@ -88,12 +86,12 @@ for kk in range(0,len(epoch_list)):
     #model.add(Dense(units=num_classes, activation='softmax'))
     model.summary()
     
-    model.compile(optimizer = 'sgd', loss='MSE', metrics=['accuracy'])
+    model.compile(optimizer = 'sgd', loss='categorical_crossentropy', metrics=['accuracy'])
     history = model.fit(x_train_0D, y_train_0D, batch_size=128, epochs=int(epoch_list[kk]), verbose=False, validation_split=.1)
     loss, accuracy  = model.evaluate(x_test_0D, y_test_0D, verbose=False)
     
-    relu_MSE_epoch_test2L[kk] = accuracy
-    relu_MSE_epoch_train2L[kk] = history.history['accuracy'][-1]
+    relu_epoch_test2L[kk] = accuracy
+    relu_epoch_train2L[kk] = history.history['accuracy'][-1]
 
 ## Epoch loop sigmoid
 for kk in range(0,len(epoch_list)):
@@ -107,12 +105,12 @@ for kk in range(0,len(epoch_list)):
     #model.add(Dense(units=num_classes, activation='softmax'))
     model.summary()
     
-    model.compile(optimizer = 'sgd', loss='MSE', metrics=['accuracy'])
+    model.compile(optimizer = 'sgd', loss='categorical_crossentropy', metrics=['accuracy'])
     history = model.fit(x_train_0D, y_train_0D, batch_size=128, epochs=int(epoch_list[kk]), verbose=False, validation_split=.1)
     loss, accuracy  = model.evaluate(x_test_0D, y_test_0D, verbose=False)
     
-    sigmoid_MSE_epoch_test2L[kk] = accuracy
-    sigmoid_MSE_epoch_train2L[kk] = history.history['accuracy'][-1]
+    sigmoid_epoch_test2L[kk] = accuracy
+    sigmoid_epoch_train2L[kk] = history.history['accuracy'][-1]
     
 # Node loop relu
 for kk in range(0,len(nodes_list)):
@@ -126,12 +124,12 @@ for kk in range(0,len(nodes_list)):
     #model.add(Dense(units=num_classes, activation='softmax'))
     model.summary()
     
-    model.compile(optimizer = 'sgd', loss='MSE', metrics=['accuracy'])
+    model.compile(optimizer = 'sgd', loss='categorical_crossentropy', metrics=['accuracy'])
     history = model.fit(x_train_0D, y_train_0D, batch_size=128, epochs=epoch_default, verbose=False, validation_split=.1)
     loss, accuracy  = model.evaluate(x_test_0D, y_test_0D, verbose=False)
     
-    relu_MSE_nodes_test2L[kk] = accuracy
-    relu_MSE_nodes_train2L[kk] = history.history['accuracy'][-1]
+    relu_nodes_test2L[kk] = accuracy
+    relu_nodes_train2L[kk] = history.history['accuracy'][-1]
 
 # Node loop sigmoid
 for kk in range(0,len(epoch_list)):
@@ -145,12 +143,12 @@ for kk in range(0,len(epoch_list)):
     #model.add(Dense(units=num_classes, activation='softmax'))
     model.summary()
     
-    model.compile(optimizer = 'sgd', loss='MSE', metrics=['accuracy'])
+    model.compile(optimizer = 'sgd', loss='categorical_crossentropy', metrics=['accuracy'])
     history = model.fit(x_train_0D, y_train_0D, batch_size=128, epochs=epoch_default, verbose=False, validation_split=.1)
     loss, accuracy  = model.evaluate(x_test_0D, y_test_0D, verbose=False)
     
-    sigmoid_MSE_nodes_test2L[kk] = accuracy
-    sigmoid_MSE_nodes_train2L[kk] = history.history['accuracy'][-1]
+    sigmoid_nodes_test2L[kk] = accuracy
+    sigmoid_nodes_train2L[kk] = history.history['accuracy'][-1]
 
 # Epoch loop relu
 for kk in range(0,len(epoch_list)):
@@ -165,12 +163,12 @@ for kk in range(0,len(epoch_list)):
     #model.add(Dense(units=num_classes, activation='softmax'))
     model.summary()
     
-    model.compile(optimizer = 'sgd', loss='MSE', metrics=['accuracy'])
+    model.compile(optimizer = 'sgd', loss='categorical_crossentropy', metrics=['accuracy'])
     history = model.fit(x_train_0D, y_train_0D, batch_size=128, epochs=int(epoch_list[kk]), verbose=False, validation_split=.1)
     loss, accuracy  = model.evaluate(x_test_0D, y_test_0D, verbose=False)
     
-    relu_MSE_epoch_test3L[kk] = accuracy
-    relu_MSE_epoch_train3L[kk] = history.history['accuracy'][-1]
+    relu_epoch_test3L[kk] = accuracy
+    relu_epoch_train3L[kk] = history.history['accuracy'][-1]
 
 ## Epoch loop sigmoid
 for kk in range(0,len(epoch_list)):
@@ -185,12 +183,12 @@ for kk in range(0,len(epoch_list)):
     #model.add(Dense(units=num_classes, activation='softmax'))
     model.summary()
     
-    model.compile(optimizer = 'sgd', loss='MSE', metrics=['accuracy'])
+    model.compile(optimizer = 'sgd', loss='categorical_crossentropy', metrics=['accuracy'])
     history = model.fit(x_train_0D, y_train_0D, batch_size=128, epochs=int(epoch_list[kk]), verbose=False, validation_split=.1)
     loss, accuracy  = model.evaluate(x_test_0D, y_test_0D, verbose=False)
     
-    sigmoid_MSE_epoch_test3L[kk] = accuracy
-    sigmoid_MSE_epoch_train3L[kk] = history.history['accuracy'][-1]
+    sigmoid_epoch_test3L[kk] = accuracy
+    sigmoid_epoch_train3L[kk] = history.history['accuracy'][-1]
     
 # Node loop relu
 for kk in range(0,len(nodes_list)):
@@ -205,12 +203,12 @@ for kk in range(0,len(nodes_list)):
     #model.add(Dense(units=num_classes, activation='softmax'))
     model.summary()
     
-    model.compile(optimizer = 'sgd', loss='MSE', metrics=['accuracy'])
+    model.compile(optimizer = 'sgd', loss='categorical_crossentropy', metrics=['accuracy'])
     history = model.fit(x_train_0D, y_train_0D, batch_size=128, epochs=epoch_default, verbose=False, validation_split=.1)
     loss, accuracy  = model.evaluate(x_test_0D, y_test_0D, verbose=False)
     
-    relu_MSE_nodes_test3L[kk] = accuracy
-    relu_MSE_nodes_train3L[kk] = history.history['accuracy'][-1]
+    relu_nodes_test3L[kk] = accuracy
+    relu_nodes_train3L[kk] = history.history['accuracy'][-1]
 
 # Node loop sigmoid
 for kk in range(0,len(epoch_list)):
@@ -225,71 +223,65 @@ for kk in range(0,len(epoch_list)):
     #model.add(Dense(units=num_classes, activation='softmax'))
     model.summary()
     
-    model.compile(optimizer = 'sgd', loss='MSE', metrics=['accuracy'])
+    model.compile(optimizer = 'sgd', loss='categorical_crossentropy', metrics=['accuracy'])
     history = model.fit(x_train_0D, y_train_0D, batch_size=128, epochs=epoch_default, verbose=False, validation_split=.1)
     loss, accuracy  = model.evaluate(x_test_0D, y_test_0D, verbose=False)
     
-    sigmoid_MSE_nodes_test3L[kk] = accuracy
-    sigmoid_MSE_nodes_train3L[kk] = history.history['accuracy'][-1]
+    sigmoid_nodes_test3L[kk] = accuracy
+    sigmoid_nodes_train3L[kk] = history.history['accuracy'][-1]
 
 #plt.figure(1)
-#plt.scatter(epoch_list, relu_MSE_epoch_test3L)
-#plt.scatter(epoch_list, sigmoid_MSE_epoch_test3L)
+#plt.plot(epoch_list, relu_epoch_test2L,marker='o',markersize=12,color='black')
+#plt.plot(epoch_list, relu_epoch_test3L,marker='v',markersize=12,color='black')
+#plt.plot(epoch_list, sigmoid_epoch_test2L,marker='o',markersize=12,color='red')
+#plt.plot(epoch_list, sigmoid_epoch_test3L,marker='v',markersize=12,color='red')
 ##plt.title('Predicted Labels, changing alpha')
 #plt.ylabel('accuracy')
-#plt.xlabel('epoch')
-#plt.legend(['relu', 'sigmoid'], loc='best')
+#plt.xlabel('epochs')
+#plt.legend(['relu, 2 layers', 'relu, 3 layers', 'sigmoid, 2 layers', 'sigmoid, 3 layers'], loc='best')
 #plt.show()
 #
 #plt.figure(2)
-#plt.scatter(nodes_list, relu_MSE_nodes_test3L, linewidths = '1')
-#plt.scatter(nodes_list, sigmoid_MSE_nodes_test3L)
+#plt.plot(nodes_list, relu_nodes_test2L,marker='o',markersize=12,color='black')
+#plt.plot(nodes_list, relu_nodes_test3L,marker='v',markersize=12,color='black')
+#plt.plot(nodes_list, sigmoid_nodes_test2L,marker='o',markersize=12,color='red')
+#plt.plot(nodes_list, sigmoid_nodes_test3L,marker='v',markersize=12,color='red')
 ##plt.title('Predicted Labels, changing alpha')
 #plt.ylabel('accuracy')
 #plt.xlabel('width of hidden layers')
-#plt.legend(['relu', 'sigmoid'], loc='best')
+#plt.legend(['relu, 2 layers', 'relu, 3 layers', 'sigmoid, 2 layers', 'sigmoid, 3 layers'], loc='best')
 #plt.show()
 
-
-#plt.figure(3)
-#plt.plot(nodes_list, relu_MSE_nodes_test,marker='o')
-#plt.plot(nodes_list, sigmoid_MSE_nodes_test,marker='o')
-##plt.title('Predicted Labels, changing alpha')
-#plt.ylabel('accuracy')
-#plt.xlabel('width of hidden layers')
-#plt.legend(['relu', 'sigmoid'], loc='best')
-#plt.show()
-
-plt.figure(1)
-plt.plot(epoch_list, relu_MSE_epoch_test2L,marker='o',markersize=12,color='black')
-plt.plot(epoch_list, relu_MSE_epoch_test3L,marker='v',markersize=12,color='black')
-plt.plot(epoch_list, sigmoid_MSE_epoch_test2L,marker='o',markersize=12,color='red')
-plt.plot(epoch_list, sigmoid_MSE_epoch_test3L,marker='v',markersize=12,color='red')
+plt.figure(3)
+plt.plot(epoch_list, 1-relu_epoch_test2L,marker='o',markersize=12,color='black')
+plt.plot(epoch_list, 1-relu_epoch_test3L,marker='v',markersize=12,color='black')
+plt.plot(epoch_list, 1-sigmoid_epoch_test2L,marker='o',markersize=12,color='red')
+plt.plot(epoch_list, 1-sigmoid_epoch_test3L,marker='v',markersize=12,color='red')
 #plt.title('Predicted Labels, changing alpha')
-plt.ylabel('accuracy')
-plt.xlabel('width of hidden layers')
+plt.ylabel('Error Rate')
+plt.xlabel('Epochs')
 plt.legend(['relu, 2 layers', 'relu, 3 layers', 'sigmoid, 2 layers', 'sigmoid, 3 layers'], loc='best')
+plt.grid(True)
 plt.show()
 
-plt.figure(2)
-plt.plot(nodes_list, relu_MSE_nodes_test2L,marker='o',markersize=12,color='black')
-plt.plot(nodes_list, relu_MSE_nodes_test3L,marker='v',markersize=12,color='black')
-plt.plot(nodes_list, sigmoid_MSE_nodes_test2L,marker='o',markersize=12,color='red')
-plt.plot(nodes_list, sigmoid_MSE_nodes_test3L,marker='v',markersize=12,color='red')
+plt.figure(4)
+plt.plot(nodes_list, 1-relu_nodes_test2L,marker='o',markersize=12,color='black')
+plt.plot(nodes_list, 1-relu_nodes_test3L,marker='v',markersize=12,color='black')
+plt.plot(nodes_list, 1-sigmoid_nodes_test2L,marker='o',markersize=12,color='red')
+plt.plot(nodes_list, 1-sigmoid_nodes_test3L,marker='v',markersize=12,color='red')
 #plt.title('Predicted Labels, changing alpha')
-plt.ylabel('accuracy')
-plt.xlabel('width of hidden layers')
+plt.ylabel('Error Rate')
+plt.xlabel('Width of hidden layers')
 plt.legend(['relu, 2 layers', 'relu, 3 layers', 'sigmoid, 2 layers', 'sigmoid, 3 layers'], loc='best')
+plt.grid(True)
 plt.show()
 
-#
-#
-#plt.plot(history.history['acc'])
-#plt.plot(history.history['val_acc'])
-#plt.title('model accuracy')
 
-#
-#print(f'Test loss: {loss:.3}')
-#print(f'Test accuracy: {accuracy:.3}')
+
+
+
+
+
+
 
 
