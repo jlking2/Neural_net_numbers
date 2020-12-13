@@ -1,11 +1,9 @@
 READ ME
 
 Final report can be found here:
-
 Neural_net_numbers\Project Docs\Final project Final Draft King
 
-The code used to generate figures in final report are here:
-
+Codes should not require alteration to generate figures as long as sklearn, tensorflow, and keras are installed and callable. Just run the code. The code used to generate figures in final report are here:
 Figure 1a: Neural_net_numbers\Codes\Linked Codes\Tikhonov\binary_Tik_combo_3_alldata
 Figure 1b: Neural_net_numbers\Codes\Linked Codes\Tikhonov\binary_Tik_combo_3_smalldata
 
