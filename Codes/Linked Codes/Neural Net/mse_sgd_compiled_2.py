@@ -14,10 +14,10 @@ import keras
 (x_train, y_train), (x_test, y_test) = tf.keras.datasets.mnist.load_data()
 
 #x_test = x_train[10000:20000,:,:]
-x_train = x_train[0:1000,:,:]
+#x_train = x_train[0:1000,:,:]
 #
 #y_test = y_train[10000:20000]
-y_train = y_train[0:1000]
+#y_train = y_train[0:1000]
 
 y_length_train = len(y_train)
 y_length_test = len(y_test)
