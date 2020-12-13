@@ -1,0 +1,22 @@
+READ ME
+
+Final report can be found here:
+
+Neural_net_numbers\Project Docs\Final project Final Draft King
+
+The code used to generate figures in final report are here:
+
+Figure 1a: Neural_net_numbers\Codes\Linked Codes\Tikhonov\binary_Tik_combo_3_alldata
+Figure 1b: Neural_net_numbers\Codes\Linked Codes\Tikhonov\binary_Tik_combo_3_smalldata
+
+Figure 2a: Neural_net_numbers\Codes\Linked Codes\LASSO\binary_lasso_combo_4
+Figure 2b: Neural_net_numbers\Codes\Linked Codes\LASSO\binary_lasso_combo_4_smalldata
+
+Figure 3a, 4a, 4b: Neural_net_numbers\Codes\Linked Codes\Hinge and SVM\binary_hinge_4_alldata
+Figure 3b: Neural_net_numbers\Codes\Linked Codes\Hinge and SVM\binary_hinge_4_smalldata
+
+Figure 5a, 5b: Neural_net_numbers\Codes\Linked Codes\Neural Net\CE_sgd_compiled_2
+Figure 6a, 6b: Neural_net_numbers\Codes\Linked Codes\Neural Net\mse_sgd_compiled_2
+
+
+
